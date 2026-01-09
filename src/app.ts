@@ -4,6 +4,8 @@ import helmet from "helmet";
 
 import { healthRouter } from "./routes/health.routes.js";
 import { notFound, errorHandler } from "./middlewares/error.middleware.js";
+import { debugRouter } from "./routes/debug.routes.js";
+
 
 export const createApp = () => {
   const app = express();
@@ -13,6 +15,8 @@ export const createApp = () => {
   app.use(express.json());
 
   app.use(healthRouter);
+  app.use(debugRouter);
+
 
   app.use(notFound);
   app.use(errorHandler);
