@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/modules/auth/auth.middleware.tsرر"],
   "exclude": ["node_modules", "dist"]
 }

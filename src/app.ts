@@ -5,6 +5,8 @@ import helmet from "helmet";
 import { healthRouter } from "./routes/health.routes.js";
 import { notFound, errorHandler } from "./middlewares/error.middleware.js";
 import { debugRouter } from "./routes/debug.routes.js";
+import { authRouter } from "./modules/auth/auth.routes.js";
+
 
 
 export const createApp = () => {
@@ -16,8 +18,7 @@ export const createApp = () => {
 
   app.use(healthRouter);
   app.use(debugRouter);
-
-
+  app.use(authRouter);
   app.use(notFound);
   app.use(errorHandler);
 
