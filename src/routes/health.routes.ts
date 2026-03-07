@@ -5,10 +5,8 @@ import { env } from "../config/env.js";
 export const healthRouter = Router();
 
 healthRouter.get("/health", (req, res) => {
-  res.json(
-    ok({
-      status: "ok",
-      env: env.NODE_ENV,
-    })
-  );
+  ok(res, {
+    status: "ok",
+    env: env.NODE_ENV,
+  });
 });

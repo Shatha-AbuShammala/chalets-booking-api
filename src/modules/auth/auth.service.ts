@@ -3,7 +3,12 @@ import { hashPassword, comparePassword } from "../../utils/password.js";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../../utils/jwt.js";
 import bcrypt from "bcrypt";
 
-export const register = async (input: { name: string; email: string; password: string }) => {
+export const register = async (input: { 
+  name: string; 
+  email: string; 
+  password: string;
+  role?: string;
+}) => {
   const exists = await UserModel.findOne({ email: input.email });
   if (exists) throw new Error("Email already in use");
 
@@ -13,9 +18,10 @@ export const register = async (input: { name: string; email: string; password: s
     name: input.name,
     email: input.email,
     passwordHash,
-    role: "customer",
+    role: input.role ?? "customer", // ✅ هاد هو التغيير
   });
-const payload = { sub: String(user._id), role: user.role };
+
+  const payload = { sub: String(user._id), role: user.role };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 
@@ -41,6 +47,7 @@ export const login = async (input: { email: string; password: string }) => {
 
   return { user, accessToken, refreshToken };
 };
+
 export const refresh = async (input: { refreshToken: string }) => {
   const payload = verifyRefreshToken(input.refreshToken);
 

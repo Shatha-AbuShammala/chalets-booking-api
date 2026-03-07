@@ -2,7 +2,7 @@ import { Router } from "express";
 import rateLimit from "express-rate-limit";
 import { validate } from "../../middlewares/validate.middleware.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { ok } from "../../utils/http.js";
+import { ok, created } from "../../utils/http.js";
 import { registerSchema, loginSchema, refreshTokenSchema } from "./auth.schemas.js";
 import * as AuthService from "./auth.service.js";
 import { requireAuth } from "../../middlewares/auth.middleware.js";
@@ -17,13 +17,11 @@ authRouter.post(
   validate(registerSchema),
   asyncHandler(async (req, res) => {
     const { user, accessToken, refreshToken } = await AuthService.register(req.body);
-    res.status(201).json(
-      ok({
-        user: { id: String(user._id), name: user.name, email: user.email, role: user.role },
-        accessToken,
-        refreshToken,
-      })
-    );
+    return created(res, {
+      user: { id: String(user._id), name: user.name, email: user.email, role: user.role },
+      accessToken,
+      refreshToken,
+    });
   })
 );
 
@@ -33,13 +31,11 @@ authRouter.post(
   validate(loginSchema),
   asyncHandler(async (req, res) => {
     const { user, accessToken, refreshToken } = await AuthService.login(req.body);
-    res.json(
-      ok({
-        user: { id: String(user._id), name: user.name, email: user.email, role: user.role },
-        accessToken,
-        refreshToken,
-      })
-    );
+    return ok(res, {
+      user: { id: String(user._id), name: user.name, email: user.email, role: user.role },
+      accessToken,
+      refreshToken,
+    });
   })
 );
 
@@ -49,7 +45,7 @@ authRouter.post(
   validate(refreshTokenSchema),
   asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await AuthService.refresh(req.body);
-    res.json(ok({ accessToken, refreshToken }));
+    return ok(res, { accessToken, refreshToken });
   })
 );
 
@@ -58,6 +54,6 @@ authRouter.post(
   requireAuth,
   asyncHandler(async (req, res) => {
     await AuthService.logout(req.user!.id);
-    res.json(ok({ message: "Logged out" }));
+    return ok(res, { message: "Logged out" });
   })
 );
