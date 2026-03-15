@@ -8,6 +8,8 @@ import { debugRouter } from "./routes/debug.routes.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import chaletRouter from "./modules/chalets/chalet.routes.js";
 import { bookingRouter } from "./modules/bookings/booking.routes.js";
+import { reviewRouter } from "./modules/reviews/review.routes.js";
+
 
 
 export const createApp = () => {
@@ -22,6 +24,7 @@ export const createApp = () => {
   app.use("/api", authRouter);
   app.use("/api/chalets", chaletRouter);
   app.use("/api/bookings", bookingRouter);
+  app.use("/api/reviews", reviewRouter);
 
   app.use(notFound);
   app.use(errorHandler);
