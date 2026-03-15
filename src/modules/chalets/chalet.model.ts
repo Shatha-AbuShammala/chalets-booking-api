@@ -13,6 +13,8 @@ export interface ChaletDocument extends Document {
   status: ChaletStatus;
   isActive: boolean;
   rejectionReason?: string | null;
+  averageRating: number;
+  reviewsCount: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -74,6 +76,16 @@ const ChaletSchema = new Schema<ChaletDocument>(
     rejectionReason: {
       type: String,
       default: null,
+    },
+    averageRating: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5,
+    },
+    reviewsCount: {
+      type: Number,
+      default: 0,
     },
   },
   {
