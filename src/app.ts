@@ -24,6 +24,15 @@ export const createApp = () => {
   app.use(cors());
   app.use(globalLimiter);
   app.use(express.json({ limit: "10kb" }));
+  app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Welcome to Chalets Booking API ",
+    version: "1.0.0",
+    health: "/health",
+    docs: "https://github.com/Shatha-AbuShammala/chalets-booking-api"
+  });
+});
 
   app.use(healthRouter);
   app.use(debugRouter);
