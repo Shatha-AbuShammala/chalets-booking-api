@@ -4,6 +4,8 @@ import { requireAuth } from "../../middlewares/auth.middleware.js";
 import { requireRole } from "../../middlewares/auth.middleware.js";
 import { validate } from "../../middlewares/validate.middleware.js";
 import { createChaletSchema, updateChaletSchema } from "./chalet.validation.js";
+import { upload } from "../../middlewares/upload.middleware.js";
+
 
 const router = Router();
 
@@ -21,3 +23,12 @@ router.delete("/:id", requireAuth, requireRole("owner"), chaletController.delete
 router.patch("/:id/status", requireAuth, requireRole("admin"), chaletController.updateChaletStatus);
 
 export default router;
+
+// Owner only — upload images
+router.post(
+  "/:id/images",
+  requireAuth,
+  requireRole("owner"),
+  upload.array("images", 5),
+  chaletController.uploadChaletImages
+);

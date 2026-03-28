@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ok, created, notFound, forbidden } from "../../utils/http.js";
 import * as chaletService from "./chalet.service.js";
+import { uploadImage } from "../../utils/cloudinary.upload.js";
+import { badRequest } from "../../utils/http.js";
 
 // POST /api/chalets — Owner only
 export const createChalet = asyncHandler(async (req: Request, res: Response) => {
@@ -71,4 +73,27 @@ export const updateChaletStatus = asyncHandler(async (req: Request, res: Respons
 export const getOwnerChalets = asyncHandler(async (req: Request, res: Response) => {
   const chalets = await chaletService.getOwnerChalets(req.user!.id);
   return ok(res, chalets);
+});
+
+// POST /api/chalets/:id/images — Owner only
+export const uploadChaletImages = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  if (!id) return notFound(res, "Invalid ID");
+
+  const files = req.files as Express.Multer.File[];
+  if (!files || files.length === 0) return badRequest(res, "No images provided");
+
+  const chalet = await chaletService.getChaletById(id);
+  if (!chalet) return notFound(res, "Chalet not found");
+  if (String(chalet.ownerId) !== req.user!.id) return forbidden(res, "Forbidden");
+
+  const urls = await Promise.all(
+    files.map((file) => uploadImage(file.buffer, "chalets"))
+  );
+
+  const updated = await chaletService.updateChalet(id, req.user!.id, {
+    images: [...chalet.images, ...urls],
+  });
+
+  return ok(res, updated);
 });
