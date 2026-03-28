@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 import { healthRouter } from "./routes/health.routes.js";
 import { notFound, errorHandler } from "./middlewares/error.middleware.js";
@@ -10,14 +11,19 @@ import chaletRouter from "./modules/chalets/chalet.routes.js";
 import { bookingRouter } from "./modules/bookings/booking.routes.js";
 import { reviewRouter } from "./modules/reviews/review.routes.js";
 
-
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { success: false, error: { message: "Too many requests, please try again later" } },
+});
 
 export const createApp = () => {
   const app = express();
 
   app.use(helmet());
   app.use(cors());
-  app.use(express.json());
+  app.use(globalLimiter);
+  app.use(express.json({ limit: "10kb" }));
 
   app.use(healthRouter);
   app.use(debugRouter);
