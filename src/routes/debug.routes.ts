@@ -6,5 +6,5 @@ export const debugRouter = Router();
 
 debugRouter.get("/debug/users-count", async (req, res) => {
   const count = await UserModel.countDocuments();
-  res.json(ok({ count }));
+  ok(res, { count });
 });
