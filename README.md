@@ -24,9 +24,9 @@ A production-ready RESTful API for a chalet booking marketplace built with **Nod
 
 Interactive API documentation is available via Swagger UI.
 
-Local: http://localhost:4000/api-docs
-Production: https://chalets-booking-api-production.up.railway.app/api-docs
- (Railway)
+**Local**: http://localhost:4000/api-docs
+**Production**: https://chalets-booking-api-production.up.railway.app/api-docs (Railway)
+
 
 ## 🛠️ Tech Stack
 
