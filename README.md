@@ -20,6 +20,14 @@ A production-ready RESTful API for a chalet booking marketplace built with **Nod
 
 ---
 
+## 📘 Swagger API Docs
+
+Interactive API documentation is available via Swagger UI.
+
+Local: http://localhost:4000/api-docs
+Production: https://chalets-booking-api-production.up.railway.app/api-docs
+ (Railway)
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
@@ -50,19 +58,6 @@ src/
 ├── config/           → env, cloudinary
 └── routes/           → health, debug
 ```
-
----
-
-## 👥 Roles & Permissions
-
-| Action | Admin | Owner | Customer |
-|--------|-------|-------|----------|
-| Approve/Reject Chalet | ✅ | ❌ | ❌ |
-| Create/Edit Chalet | ❌ | ✅ | ❌ |
-| Upload Images | ❌ | ✅ | ❌ |
-| Book Chalet | ❌ | ❌ | ✅ |
-| Cancel Booking | ❌ | ❌ | ✅ |
-| Write Review | ❌ | ❌ | ✅ |
 
 ---
 
@@ -162,3 +157,11 @@ npm start      # Production
 - **API:** https://chalets-booking-api-production.up.railway.app
 - **Database:** MongoDB Atlas
 - **Images:** Cloudinary
+
+---
+
+## 🐳 DevOps
+
+- Containerized using Docker
+- Multi-service setup with Docker Compose (API + MongoDB)
+- CI pipeline using GitHub Actions for automated builds
